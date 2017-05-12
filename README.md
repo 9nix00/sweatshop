@@ -2,7 +2,7 @@ SweatShop
 =========
 
 
-根据 git commit 提交时间，计算自己的加班时长
+根据 git commit 提交时间，计算自己的加班时长。
 计算结果为根据
 [中华人民共和国劳动法](http://www.npc.gov.cn/wxzl/gongbao/2000-12/05/content_5004622.htm)
 第四十四条对应策略换算后的时长
