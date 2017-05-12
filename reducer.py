@@ -6,8 +6,8 @@ import sys
 from datetime import datetime
 from datetime import time
 
-weekday = os.environ.get('SWEETSHOP_WEEKDAY', '7').split(',')
-debug = os.environ.get('SWEETSHOP_DEBUG', False)
+weekday = os.environ.get('SWEATSHOP_WEEKDAY', '7').split(',')
+debug = os.environ.get('SWEATSHOP_DEBUG', False)
 
 duty = {}
 

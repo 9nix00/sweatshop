@@ -8,7 +8,7 @@ import time
 from datetime import datetime
 from email.utils import parsedate
 
-filter_user = os.environ.get('SWEETSHOP_EMAIL', 'wangwenpei@nextoa.com').split(
+filter_user = os.environ.get('SWEATSHOP_EMAIL', 'wangwenpei@nextoa.com').split(
     ',')
 
 for line in sys.stdin:

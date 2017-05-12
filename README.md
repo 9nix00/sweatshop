@@ -1,5 +1,5 @@
-血汗工厂
-====
+SweatShop
+=========
 
 
 根据 git commit 提交时间，计算自己的加班时长
@@ -46,8 +46,8 @@ cd -
 ## 开始执行
 
 ```
-export SWEETSHOP_EMAIL='<commit提交时的email-01>,<commit提交时的email-02>'
-export SWEETSHOP_WEEKDAY='6,7'
+export SWEATSHOP_EMAIL='<commit提交时的email-01>,<commit提交时的email-02>'
+export SWEATSHOP_WEEKDAY='6,7'
 
 cat <输出路径> | python ./mapper.py | sort | python ./reducer.py
 ```
