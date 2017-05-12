@@ -55,8 +55,10 @@ cd -
 ## 开始执行
 
 ```
-export SWEATSHOP_EMAIL='<commit提交时的email-01>,<commit提交时的email-02>'
-export SWEATSHOP_WEEKDAY='6,7'
+export SWEATSHOP_EMAIL='<commit提交时的email-01>,<commit提交时的email-02>' # 默认为作者邮箱
+export SWEATSHOP_WEEKDAY='6,7' # 默认为周日休息一天
+export SWEATSHOP_DEBUG='yes'  # 查看明细工时
+
 
 cat <输出路径> | python ./mapper.py | sort | python ./reducer.py
 ```
