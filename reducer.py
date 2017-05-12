@@ -7,6 +7,8 @@ from datetime import datetime
 from datetime import time
 
 weekday = os.environ.get('SWEATSHOP_WEEKDAY', '7').split(',')
+working_time = os.environ.get('SWEATSHOP_WORKING_TIME', '10-19').split('-')
+
 debug = os.environ.get('SWEATSHOP_DEBUG', False)
 
 duty = {}
@@ -67,9 +69,9 @@ duty_day_list = [
     '2017-04-01',
 ]
 
-begin_time = time(hour=10)
+begin_time = time(hour=int(working_time[0]))
 half_end_time = time(hour=12)
-end_time = time(hour=19)
+end_time = time(hour=int(working_time[1]))
 zero_time = time(hour=0)
 
 prev = None
@@ -210,4 +212,3 @@ for k, v in duty.items():
     pass
 
 print('累计加班工时:%d' % total)
-
