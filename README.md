@@ -3,6 +3,9 @@ SweatShop
 
 
 根据 git commit 提交时间，计算自己的加班时长
+计算结果为根据[中华人民共和国劳动法](http://www.npc.gov.cn/wxzl/gongbao/2000-12/05/content_5004622.htm)
+第四十四条对应策略换算后的时长
+
 
 统计精确度有效时间为2015年11月之后
 
@@ -21,6 +24,12 @@ SweatShop
 
 
 ## 相关法律法规
+
+[中华人民共和国劳动法](http://www.npc.gov.cn/wxzl/gongbao/2000-12/05/content_5004622.htm)
+* 第四十三条
+* 第四十四条
+* 第四十五条
+
 
 [中华人民共和国劳动合同法](http://www.gov.cn/flfg/2007-06/29/content_669394.htm)
 

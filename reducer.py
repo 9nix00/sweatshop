@@ -188,6 +188,8 @@ for line in sys.stdin:
         duty[prev['date_str']] += calc_morning(prev)
         duty[prev['date_str']] += calc_night(prev)
         duty[prev['date_str']] += calc_dark(prev)
+
+        duty[prev['date_str']] *= 1.5
         pass
 
     prev = {
@@ -207,5 +209,5 @@ for k, v in duty.items():
     total += v
     pass
 
-print('累计加班时长:%d' % total)
+print('累计加班工时:%d' % total)
 
