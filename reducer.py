@@ -13,6 +13,14 @@ debug = os.environ.get('SWEATSHOP_DEBUG', False)
 
 duty = {}
 
+prevs = {
+    'yesterday': None,
+    'early': None,
+    'am': None,
+    'pm': None,
+    'late': None,
+}
+
 # 参考假日表 http://www.gov.cn/zhengce/content/2015-12/10/content_10394.htm
 #           http://www.gov.cn/zhengce/content/2016-12/01/content_5141603.htm
 # 所有假日均不按两倍工资计算
@@ -73,71 +81,100 @@ begin_time = time(hour=int(working_time[0]))
 half_end_time = time(hour=12)
 end_time = time(hour=int(working_time[1]))
 zero_time = time(hour=0)
+morning_time = time(hour=4)
 
 prev = None
+prev_obj = None
 
 
-def calc_morning(prev):
+def calc_morning(c, t):
     """
     计算早于上班时间
     :param prev: 
     :return: 
     """
-    if prev['time_obj'] < begin_time:
-        # 早于上班时间
-        # duty[prev['date_str']] += begin_time.hour - prev['time_obj'].hour
-        return begin_time.hour - prev['time_obj'].hour
+
+    if not t or c != t['date_str']:
+        return 0
+
+    if morning_time <= t['time_obj'] < begin_time:
+        return begin_time.hour - t['time_obj'].hour
+
     return 0
 
 
-def calc_am(prev):
+def calc_am(c, t):
     """
     计算上午工作时间
     
     有一次提交默认为上午工作
     :return: 
     """
-    if begin_time <= prev['time_obj'] <= half_end_time:
+    if not t or c != t['date_str']:
+        return 0
+
+    if begin_time <= t['time_obj'] <= half_end_time:
         return 4
     return 0
 
 
-def calc_pm(prev):
+def calc_pm(c, t):
     """
     计算下午工作时间
     
     有一次提交默认为下午工作
     :return: 
     """
-    if half_end_time < prev['time_obj'] <= end_time:
+    if not t or c != t['date_str']:
+        return 0
+
+    if half_end_time < t['time_obj'] <= end_time:
         # 下午时间
         return 4
     return 0
 
 
-def calc_night(prev):
+def calc_night(c, t):
     """
     计算晚上
     :param prev: 
-    :return: 
+    :return:
     """
-    if end_time < prev['time_obj']:
-        # 下午下班之后的时间
-        return prev['time_obj'].hour - end_time.hour
+
+    if not t or c != t['date_str']:
+        return 0
+    if end_time < t['time_obj']:
+        return t['time_obj'].hour - end_time.hour
     return 0
 
 
-def calc_dark(prev):
+def calc_dark(c, t):
     """
     计算凌晨
     :param prev: 
     :return: 
     """
-    if zero_time < time_obj < begin_time:
-        # 跨夜凌晨
-        # duty[prev['date_str']] += time_obj.hour - zero_time.hour
+    if not t or c != t['date_str']:
+        return 0
+
+    if zero_time < time_obj < morning_time:
         return time_obj.hour - zero_time.hour
     return 0
+
+
+def set_prev(temp):
+    if zero_time <= temp['time_obj'] < morning_time:
+        prevs['yesterday'] = temp
+    elif morning_time <= temp['time_obj'] < begin_time:
+        prevs['early'] = temp
+    elif begin_time <= temp['time_obj'] < half_end_time:
+        prevs['am'] = temp
+    elif half_end_time <= temp['time_obj'] <= end_time:
+        prevs['pm'] = temp
+    elif end_time < temp['time_obj']:
+        prevs['late'] = temp
+        pass
+    pass
 
 
 for line in sys.stdin:
@@ -150,58 +187,61 @@ for line in sys.stdin:
     time_obj = date_time_obj.time()
 
     if not prev:
-        prev = {
+        prev = date_str
+        prev_obj = date_obj
+        set_prev({
             'date_obj': date_obj,
             'time_obj': time_obj,
             'date_str': date_str,
             'time_str': time_str,
             'datetime_obj': date_time_obj,
-        }
+        })
         continue
 
-    # 同一天，忽略
-    if date_str == prev['date_str']:
+    # 同一天，参与单天存储
+    if date_str == prev:
+        set_prev({
+            'date_obj': date_obj,
+            'time_obj': time_obj,
+            'date_str': date_str,
+            'time_str': time_str,
+            'datetime_obj': date_time_obj,
+        })
         continue
 
-    duty[prev['date_str']] = 0
+    duty[prev] = 0
 
-    if prev['date_str'] in holiday_list:
+    if prev in holiday_list:
         # 假日
-        duty[prev['date_str']] += calc_morning(prev)
-        duty[prev['date_str']] += calc_am(prev)
-        duty[prev['date_str']] += calc_pm(prev)
-        duty[prev['date_str']] += calc_night(prev)
-        duty[prev['date_str']] += calc_dark(prev)
+        duty[prev] += calc_morning(prev, prevs['early'])
+        duty[prev] += calc_am(prev, prevs['am'])
+        duty[prev] += calc_pm(prev, prevs['pm'])
+        duty[prev] += calc_night(prev, prevs['late'])
+        duty[prev] += calc_dark(prev, prevs['yesterday'])
 
-        duty[prev['date_str']] *= 2
+        duty[prev] *= 2
         pass
-    elif str(prev['date_obj'].isoweekday()) in weekday:
+    elif str(prev_obj.isoweekday()) in weekday:
         # 普通休息日
-        duty[prev['date_str']] += calc_morning(prev)
-        duty[prev['date_str']] += calc_am(prev)
-        duty[prev['date_str']] += calc_pm(prev)
-        duty[prev['date_str']] += calc_night(prev)
-        duty[prev['date_str']] += calc_dark(prev)
+        duty[prev] += calc_morning(prev, prevs['early'])
+        duty[prev] += calc_am(prev, prevs['am'])
+        duty[prev] += calc_pm(prev, prevs['pm'])
+        duty[prev] += calc_night(prev, prevs['late'])
+        duty[prev] += calc_dark(prev, prevs['yesterday'])
 
-        duty[prev['date_str']] *= 2
+        duty[prev] *= 2
         pass
     else:
         # 工作日
-        duty[prev['date_str']] += calc_morning(prev)
-        duty[prev['date_str']] += calc_night(prev)
-        duty[prev['date_str']] += calc_dark(prev)
+        duty[prev] += calc_morning(prev, prevs['early'])
+        duty[prev] += calc_night(prev, prevs['late'])
+        duty[prev] += calc_dark(prev, prevs['yesterday'])
 
-        duty[prev['date_str']] *= 1.5
+        duty[prev] *= 1.5
         pass
 
-    prev = {
-        'date_obj': date_obj,
-        'time_obj': time_obj,
-        'date_str': date_str,
-        'time_str': time_str,
-        'datetime_obj': date_time_obj,
-    }
-
+    prev = date_str
+    prev_obj = date_obj
     pass
 
 total = 0
