@@ -43,6 +43,12 @@ SweatShop
 * 第八十七条
 
 
+[中华人民共和国合同法](http://www.npc.gov.cn/wxzl/wxzl/2000-12/06/content_4732.htm)
+
+* 第一百二十四条 合同法适用于劳动合同
+
+
+
 ## 准备工作
 
 
