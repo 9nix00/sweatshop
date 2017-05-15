@@ -10,6 +10,7 @@ weekday = os.environ.get('SWEATSHOP_WEEKDAY', '7').split(',')
 working_time = os.environ.get('SWEATSHOP_WORKING_TIME', '10-19').split('-')
 
 debug = os.environ.get('SWEATSHOP_DEBUG', False)
+only_hours = os.environ.get('SWEATSHOP_HOURS', False)
 
 duty = {}
 
@@ -23,8 +24,8 @@ prevs = {
 
 # 参考假日表 http://www.gov.cn/zhengce/content/2015-12/10/content_10394.htm
 #           http://www.gov.cn/zhengce/content/2016-12/01/content_5141603.htm
-# 所有假日均不按两倍工资计算
 
+#  所有假日均按两倍计算，3倍还要再细化
 holiday_list = [
     '2016-01-01',
     '2016-02-07',
@@ -156,7 +157,6 @@ def calc_dark(c, t):
     
     ..todo::
         一种解决策略：
-        
             精确的算法应为根据当前日期，获取上一日期，
             并根据上一日期的假期和工作日状态，进行赋值
     
@@ -228,7 +228,8 @@ for line in sys.stdin:
         duty[prev] += calc_night(prev, prevs['late'])
         duty[prev] += calc_dark(prev, prevs['yesterday'])
 
-        duty[prev] *= 2
+        duty[prev] *= 2 if not only_hours else 1
+
         pass
     elif str(prev_obj.isoweekday()) in weekday:
         # 普通休息日
@@ -238,7 +239,7 @@ for line in sys.stdin:
         duty[prev] += calc_night(prev, prevs['late'])
         duty[prev] += calc_dark(prev, prevs['yesterday'])
 
-        duty[prev] *= 2
+        duty[prev] *= 2 if not only_hours else 1
         pass
     else:
         # 工作日
@@ -246,7 +247,7 @@ for line in sys.stdin:
         duty[prev] += calc_night(prev, prevs['late'])
         duty[prev] += calc_dark(prev, prevs['yesterday'])
 
-        duty[prev] *= 1.5
+        duty[prev] *= 1.5 if not only_hours else 1
         pass
 
     prev = date_str

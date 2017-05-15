@@ -63,6 +63,8 @@ export SWEATSHOP_EMAIL='<commit提交时的email-01>,<commit提交时的email-02
 export SWEATSHOP_WEEKDAY='6,7' # 默认为周日休息一天
 export SWEATSHOP_WORKING_TIME='9-18'  #  默认为10-19
 export SWEATSHOP_DEBUG='yes'  # 查看明细工时
+export SWEATSHOP_HOURS='yes'  # 只计算小时，用于评估单周是否超44小时
+
 
 cat <输出路径> | python ./mapper.py | sort | python ./reducer.py
 ```
