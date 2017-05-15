@@ -48,6 +48,12 @@ SweatShop
 * 第一百二十四条 合同法适用于劳动合同
 
 
+[中华人民共和国著作权法](http://www.npc.gov.cn/npc/xinwen/2010-02/26/content_1544852.htm)
+
+* 对待奸商不能手软哟
+
+
+
 
 ## 准备工作
 
