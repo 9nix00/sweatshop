@@ -261,4 +261,5 @@ for k, v in duty.items():
     total += v
     pass
 
-print('累计加班工时:%d' % total)
+print('累计加班%s:%d' % (
+    '时长' if only_hours else '工时', total))
