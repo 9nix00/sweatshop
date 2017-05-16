@@ -50,7 +50,8 @@ SweatShop
 
 [中华人民共和国著作权法](http://www.npc.gov.cn/npc/xinwen/2010-02/26/content_1544852.htm)
 
-* 对待奸商不能手软哟
+* 第四条  著作权不能违法
+* 第十六条 职务作品 以及 物质奖励依据
 
 
 
