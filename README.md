@@ -42,6 +42,11 @@ SweatShop
 * 第六十二条
 * 第八十七条
 
+[中华人民共和国职工带薪年休假条例](http://www.gov.cn/flfg/2007-12/16/content_835527.htm)
+
+* 第三条 年假计算天数
+* 第五条 支付年假是工资报酬
+
 
 [中华人民共和国合同法](http://www.npc.gov.cn/wxzl/wxzl/2000-12/06/content_4732.htm)
 
